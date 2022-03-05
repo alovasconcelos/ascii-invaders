@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Media;
 
 namespace ASCII_Invaders
@@ -15,11 +16,36 @@ namespace ASCII_Invaders
 
         public static void PlaySound(string file)
         {
+            if (!Program.PlaySound)
+            {
+                return;
+            }
             // Create new SoundPlayer in the using statement.
             using (SoundPlayer player = new SoundPlayer($@"{exePath}\{file}"))
             {
                 // Use PlaySync to load and then play the sound.
                 player.Play();
+            }
+        }
+
+        public static int ReadBestScore()
+        {
+            if (File.Exists("score.dat"))
+            {
+                using (TextReader tr = File.OpenText("score.dat"))
+                {
+                    var fileContent = tr.ReadToEnd();
+                    return int.Parse(fileContent);
+                }
+            }        
+            return 0;
+        }
+
+        public static void WriteBestScore()
+        {
+            using (StreamWriter outputFile = new StreamWriter("score.dat"))
+            {
+                outputFile.WriteLine(Program.BestScore);
             }
         }
     }

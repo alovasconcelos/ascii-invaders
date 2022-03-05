@@ -32,7 +32,7 @@ namespace ASCII_Invaders
         {
             if (File.Exists("score.dat"))
             {
-                using (TextReader tr = File.OpenText("score.dat"))
+                using (TextReader tr = File.OpenText(Constant.ScoreFile))
                 {
                     var fileContent = tr.ReadToEnd();
                     return int.Parse(fileContent);
@@ -43,7 +43,7 @@ namespace ASCII_Invaders
 
         public static void WriteBestScore()
         {
-            using (StreamWriter outputFile = new StreamWriter("score.dat"))
+            using (StreamWriter outputFile = new StreamWriter(Constant.ScoreFile))
             {
                 outputFile.WriteLine(Program.BestScore);
             }

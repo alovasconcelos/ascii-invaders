@@ -20,6 +20,7 @@ namespace ASCII_Invaders
         public static readonly int EnemiesTimer = 10;
 
         public static readonly string ShotSound = "hitHurt.wav";
-        public static readonly string ExplodionSound = "explosion.wav";
+        public static readonly string ExplosionSound = "explosion.wav";
+        public static readonly string ScoreFile = "score.dat";
     }
 }

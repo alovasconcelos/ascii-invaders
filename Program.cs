@@ -231,7 +231,7 @@ namespace ASCII_Invaders
                         enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
                         Score++;
-                        Util.PlaySound(Constant.ExplodionSound);
+                        Util.PlaySound(Constant.ExplosionSound);
                         return true;
                     }
                 }

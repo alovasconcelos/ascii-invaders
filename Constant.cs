@@ -14,6 +14,9 @@ namespace ASCII_Invaders
         public static readonly int BattleFieldStageCol = 17;
         public static readonly int BattleFieldScoreCol = 26;
         public static readonly int BattleFieldBestScoreCol = 45;
+
+        public static readonly int OneSecond = 1000;
+        public static readonly int FinalLevel = 9;
         public static readonly int EnemiesPerRow = 7;
         public static readonly int EnemiesRows = 5;
         public static readonly int Bullets = 3;

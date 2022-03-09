@@ -11,6 +11,7 @@ namespace ASCII_Invaders
 
         private static bool keepRunning;
         private static bool _playSound;
+        private static float EnemiesTimer = 10;
 
         public static bool PlaySound
         {
@@ -59,9 +60,9 @@ namespace ASCII_Invaders
             }
         }
 
-        private static int _level;
+        private static int _level = 0;
 
-        public static int Stage
+        public static int Level
         {
             get
             {
@@ -84,7 +85,8 @@ namespace ASCII_Invaders
         private static Bullet[] bullets = new Bullet[Constant.Bullets];
         private static Enemy[,] enemies = new Enemy[Constant.EnemiesRows, Constant.EnemiesPerRow];
 
-        private static int enemiesTick = Constant.EnemiesTimer;
+        private static float enemiesTick = 10f;
+        private static Random random = new Random();
 
         private static void LoadEnemies()
         {
@@ -110,22 +112,177 @@ namespace ASCII_Invaders
             battleField = new BattleField(); // the battle field
             cannon = new Cannon(); // the cannnon
             
-            // Bullets
+            enemiesGoLeft = true;
+            enemiesGoDown = false;
+            PlaySound = true;
+            battleField.Draw();
+
+            ShowSplashScreen();
+
+            Score = 0;  
+
+            BestScore = Util.ReadBestScore();
+            NextLevel();
+        }
+
+        private static void NextLevel()
+        {
+            if (Level == Constant.FinalLevel)
+            {
+                // Last level reached - Congratulations
+            }
+
+            // Increment level number
+            Level++;
+
+            // Load bullets
             for (var b = 0; b < Constant.Bullets; b++)
             {
                 bullets[b] = new Bullet();
             }
 
+            // Load enemies
             LoadEnemies();
-            enemiesGoLeft = true;
-            enemiesGoDown = false;
-            PlaySound = true;
-            battleField.Draw();
-            Score = 0;
-            Stage = 1;
-            BestScore = Util.ReadBestScore();
+
+            ShowLevelSplashScreen();
         }
 
+        private static void ShowSplashScreen()
+        {
+            for (var row = Constant.BattleFieldBottom - 13; row > Constant.BattleFieldTop; row--)
+            {
+                Util.WriteAt(7, row, "                     ");
+                Util.WriteAt(7, row + 1, "╔═══╗        ╔══╗╔══╗");
+                Util.WriteAt(7, row + 2, "║╔═╗║        ╚╣╠╝╚╣╠╝");
+                Util.WriteAt(7, row + 3, "║║ ║║╔══╗╔══╗ ║║  ║║ ");
+                Util.WriteAt(7, row + 4, "║╚═╝║║══╣║╔═╝ ║║  ║║ ");
+                Util.WriteAt(7, row + 5, "║╔═╗║╠══║║╚═╗╔╣╠╗╔╣╠╗");
+                Util.WriteAt(7, row + 6, "╚╝ ╚╝╚══╝╚══╝╚══╝╚══╝");
+                Util.WriteAt(7, row + 7, "       ╔══╗               ╔╗           ");
+                Util.WriteAt(7, row + 8, "       ╚╣╠╝               ║║           ");
+                Util.WriteAt(7, row + 9, "        ║║ ╔═╗ ╔╗╔╗╔══╗ ╔═╝║╔══╗╔═╗╔══╗");
+                Util.WriteAt(7, row + 10, "        ║║ ║╔╗╗║╚╝║╚ ╗║ ║╔╗║║╔╗║║╔╝║══╣");
+                Util.WriteAt(7, row + 11, "       ╔╣╠╗║║║║╚╗╔╝║╚╝╚╗║╚╝║║║═╣║║ ╠══║");
+                Util.WriteAt(7, row + 12, "       ╚══╝╚╝╚╝ ╚╝ ╚═══╝╚══╝╚══╝╚╝ ╚══╝");
+                Util.WriteAt(7, row + 13, "                                       ");
+                Thread.Sleep(Constant.OneSecond / 10);
+            }
+            Thread.Sleep(Constant.OneSecond * 5);
+            ClearBattleField();
+        }
+
+        private static void ShowLevelSplashScreen()
+        {
+            for (var row = Constant.BattleFieldBottom - 6; row > Constant.BattleFieldTop; row--)
+            {
+                                          
+                Util.WriteAt(7, row,     "#       ######  #    #  ######  #     ");
+                Util.WriteAt(7, row + 1, "#       #       #    #  #       #     ");
+                Util.WriteAt(7, row + 2, "#       #####   #    #  #####   #     ");
+                Util.WriteAt(7, row + 3, "#       #       #    #  #       #     ");
+                Util.WriteAt(7, row + 4, "#       #        #  #   #       #     ");
+                Util.WriteAt(7, row + 5, "######  ######    ##    ######  ######");
+                Util.WriteAt(7, row + 6, "                                      ");
+                Thread.Sleep(Constant.OneSecond / 10);
+            }
+
+            switch (Level)
+            {
+                case 1:
+                                                                   
+                    Util.WriteAt(23, Constant.BattleFieldTop + 8,  "  #");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 9,  " ##");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 10, "# #");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 11, "  #");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 12, "  #");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 13, "  #");
+                    Util.WriteAt(23, Constant.BattleFieldTop + 14, "#####");
+                    break;
+                case 2:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "      #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#      ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#      ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "#######");
+                    break;
+                case 3:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "      #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
+                    break;
+                case 4:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, "#     ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#    #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#    #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "#######");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "     #");
+                    break;
+                case 5:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, "#######");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#      ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#      ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
+                    break;
+                case 6:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#      ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "###### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
+                    break;
+                case 7:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, "#######");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#    # ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "    #  ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "   #   ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "  #    ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "  #    ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "  #    ");
+                    break;
+                case 8:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
+                    break;
+                case 9:
+                    Util.WriteAt(22, Constant.BattleFieldTop + 8, " ##### ");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 9, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ######");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #");
+                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
+                    break;
+            }
+            Thread.Sleep(Constant.OneSecond * 2);
+            ClearBattleField();
+        }
+
+        private static void ClearBattleField()
+        {
+            for (var row = Constant.BattleFieldBottom; row > Constant.BattleFieldTop; row--)
+            {
+                Util.WriteAt(1, row, "                                                  ");
+                Thread.Sleep(Constant.OneSecond / 10);
+            }
+        }
         private static void Finish()
         {
             Console.Clear();
@@ -174,11 +331,19 @@ namespace ASCII_Invaders
             }
         }
 
+        private static float RandomizeEnemiesSpeed()
+        {
+            enemiesTick = enemiesTick - (float)random.NextDouble() * _level;
+            return enemiesTick;
+        }
+
         private static void UpdateEnemies()
         {
-            if (enemiesTick-- > 0) {
+            if (RandomizeEnemiesSpeed() > 0)
+            {
                 return;
             }
+
             enemiesTick = Constant.EnemiesTimer;
             for (var row = 0; row < Constant.EnemiesRows; row++)
             {
@@ -207,7 +372,7 @@ namespace ASCII_Invaders
                 enemiesGoLeft = false;
                 enemiesGoDown = true;
             }
-            if (enemies[0, 0].XPos == 18)
+            if (enemies[0, Constant.EnemiesPerRow -1].XPos == 48)
             {
                 enemiesGoLeft = true;
                 enemiesGoDown = true;
@@ -230,13 +395,25 @@ namespace ASCII_Invaders
                     {
                         enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
-                        Score++;
+                        Score += Level * row;
                         Util.PlaySound(Constant.ExplosionSound);
                         return true;
                     }
                 }
             }
             return false;
+        }
+
+        static bool AllEnemiesWereKilled()
+        {
+            foreach(var enemy in enemies)
+            {
+                if (enemy.Alive)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
          static void UpdateBullets()
@@ -250,6 +427,11 @@ namespace ASCII_Invaders
                     if (CheckEnemyHit(bullets[b]))
                     {
                         bullets[b].Shot = false;
+                        if (AllEnemiesWereKilled())
+                        {
+                            NextLevel();
+                            return;
+                        }
                     }
                     Thread.Sleep(5);
                     bullets[b].Clear();
@@ -262,14 +444,14 @@ namespace ASCII_Invaders
         }
         static void Main(string[] args)
         {
-            Init();
+            Init();                        
             
             // Game loop
             while (keepRunning)
             {
                 cannon.Draw();
                 UpdateBullets();
-                Thread.Sleep(20);
+                Thread.Sleep(Constant.OneSecond / 50);
                 UpdateEnemies();
                 CheckKeypressed();
              }

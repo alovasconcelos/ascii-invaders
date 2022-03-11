@@ -9,9 +9,8 @@ namespace ASCII_Invaders
         public Cannon()
         {
             Sprite = "^-^";
-            YPos = Constant.BattleFieldBottom - 1;
-            XPos = (Constant.BattleFieldWidth - 2) / 2 - 1;
-            
+            YPos = Constant.BattleFieldBottom;
+            XPos = (Constant.BattleFieldWidth - 2) / 2 - 1;            
         }
 
     }

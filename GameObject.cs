@@ -42,7 +42,7 @@ namespace ASCII_Invaders
         }
         public void MoveDown()
         {
-            if (YPos < Constant.BattleFieldBottom -1)
+            if (YPos < Constant.BattleFieldBottom)
             {
                 Clear();
                 YPos++;

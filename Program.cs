@@ -112,17 +112,16 @@ namespace ASCII_Invaders
             battleField = new BattleField(); // the battle field
             cannon = new Cannon(); // the cannnon
             
-            enemiesGoLeft = true;
-            enemiesGoDown = false;
             PlaySound = true;
             battleField.Draw();
 
             ShowSplashScreen();
 
+            enemiesGoLeft = true;
+            enemiesGoDown = false;
             Score = 0;  
 
             BestScore = Util.ReadBestScore();
-            NextLevel();
         }
 
         private static void NextLevel()
@@ -151,23 +150,49 @@ namespace ASCII_Invaders
         {
             for (var row = Constant.BattleFieldBottom - 13; row > Constant.BattleFieldTop; row--)
             {
-                Util.WriteAt(7, row, "                     ");
-                Util.WriteAt(7, row + 1, "╔═══╗        ╔══╗╔══╗");
-                Util.WriteAt(7, row + 2, "║╔═╗║        ╚╣╠╝╚╣╠╝");
-                Util.WriteAt(7, row + 3, "║║ ║║╔══╗╔══╗ ║║  ║║ ");
-                Util.WriteAt(7, row + 4, "║╚═╝║║══╣║╔═╝ ║║  ║║ ");
-                Util.WriteAt(7, row + 5, "║╔═╗║╠══║║╚═╗╔╣╠╗╔╣╠╗");
-                Util.WriteAt(7, row + 6, "╚╝ ╚╝╚══╝╚══╝╚══╝╚══╝");
-                Util.WriteAt(7, row + 7, "       ╔══╗               ╔╗           ");
-                Util.WriteAt(7, row + 8, "       ╚╣╠╝               ║║           ");
-                Util.WriteAt(7, row + 9, "        ║║ ╔═╗ ╔╗╔╗╔══╗ ╔═╝║╔══╗╔═╗╔══╗");
-                Util.WriteAt(7, row + 10, "        ║║ ║╔╗╗║╚╝║╚ ╗║ ║╔╗║║╔╗║║╔╝║══╣");
-                Util.WriteAt(7, row + 11, "       ╔╣╠╗║║║║╚╗╔╝║╚╝╚╗║╚╝║║║═╣║║ ╠══║");
-                Util.WriteAt(7, row + 12, "       ╚══╝╚╝╚╝ ╚╝ ╚═══╝╚══╝╚══╝╚╝ ╚══╝");
+                Util.WriteAt(7, row, "╔═══╗        ╔══╗╔══╗");
+                Util.WriteAt(7, row + 1, "║╔═╗║        ╚╣╠╝╚╣╠╝");
+                Util.WriteAt(7, row + 2, "║║ ║║╔══╗╔══╗ ║║  ║║ ");
+                Util.WriteAt(7, row + 3, "║╚═╝║║══╣║╔═╝ ║║  ║║ ");
+                Util.WriteAt(7, row + 4, "║╔═╗║╠══║║╚═╗╔╣╠╗╔╣╠╗");
+                Util.WriteAt(7, row + 5, "╚╝ ╚╝╚══╝╚══╝╚══╝╚══╝");
+                Util.WriteAt(7, row + 6, "       ╔══╗               ╔╗           ");
+                Util.WriteAt(7, row + 7, "       ╚╣╠╝               ║║           ");
+                Util.WriteAt(7, row + 8, "        ║║ ╔═╗ ╔╗╔╗╔══╗ ╔═╝║╔══╗╔═╗╔══╗");
+                Util.WriteAt(7, row + 9, "        ║║ ║╔╗╗║╚╝║╚ ╗║ ║╔╗║║╔╗║║╔╝║══╣");
+                Util.WriteAt(7, row + 10, "       ╔╣╠╗║║║║╚╗╔╝║╚╝╚╗║╚╝║║║═╣║║ ╠══║");
+                Util.WriteAt(7, row + 11, "       ╚══╝╚╝╚╝ ╚╝ ╚═══╝╚══╝╚══╝╚╝ ╚══╝");
+                Util.WriteAt(7, row + 12, "               alovasconcelos.github.io");
                 Util.WriteAt(7, row + 13, "                                       ");
                 Thread.Sleep(Constant.OneSecond / 10);
             }
             Thread.Sleep(Constant.OneSecond * 5);
+            ClearBattleField();
+        }
+
+        private static void GameOver()
+        {
+            ClearBattleField();
+            for (var row = Constant.BattleFieldBottom - 12; row > Constant.BattleFieldTop; row--)
+            {
+                Util.WriteAt(7, row, "╔═══╗             ");
+                Util.WriteAt(7, row + 1, "║╔═╗║             ");
+                Util.WriteAt(7, row + 2, "║║ ╚╝╔══╗ ╔╗╔╗╔══╗");
+                Util.WriteAt(7, row + 3, "║║╔═╗╚ ╗║ ║╚╝║║╔╗║");
+                Util.WriteAt(7, row + 4, "║╚╩═║║╚╝╚╗║║║║║║═╣");
+                Util.WriteAt(7, row + 5, "╚═══╝╚═══╝╚╩╩╝╚══╝");
+                Util.WriteAt(7, row + 6, "        ╔══╗╔╗╔╗╔══╗╔═╗");
+                Util.WriteAt(7, row + 7, "        ║╔╗║║╚╝║║╔╗║║╔╝");
+                Util.WriteAt(7, row + 8, "        ║╚╝║╚╗╔╝║║═╣║║ ");
+                Util.WriteAt(7, row + 9, "        ╚══╝ ╚╝ ╚══╝╚╝ ");
+                Util.WriteAt(7, row + 10, "                       ");
+                Util.WriteAt(7, row + 11, "    Your score: " + Score.ToString().PadLeft(6, '0'));
+                Util.WriteAt(7, row + 12, "                       ");
+                Thread.Sleep(Constant.OneSecond / 10);
+            }
+            Thread.Sleep(Constant.OneSecond * 5);
+            Level = 0;
+            Score = 0;
             ClearBattleField();
         }
 
@@ -327,6 +352,9 @@ namespace ASCII_Invaders
                     case ConsoleKey.M:
                         PlaySound = !PlaySound;
                         break;
+                    case ConsoleKey.Escape:
+                        keepRunning = false;
+                        break;
                 }
             }
         }
@@ -335,6 +363,15 @@ namespace ASCII_Invaders
         {
             enemiesTick = enemiesTick - (float)random.NextDouble() * _level;
             return enemiesTick;
+        }
+
+        private static bool TheEnemyLanded(int row)
+        {
+            if (row == Constant.BattleFieldBottom)
+            {
+                return true;
+            }
+            return false;
         }
 
         private static void UpdateEnemies()
@@ -362,6 +399,12 @@ namespace ASCII_Invaders
                         else
                         {
                             enemies[row, col].MoveRight();
+                        }
+
+                        if (TheEnemyLanded(enemies[row, col].YPos))
+                        {
+                            GameOver();
+                            return;
                         }
                     }
                 }
@@ -404,7 +447,7 @@ namespace ASCII_Invaders
             return false;
         }
 
-        static bool AllEnemiesWereKilled()
+        static bool ThereIsNoEnemyLeft()
         {
             foreach(var enemy in enemies)
             {
@@ -427,7 +470,7 @@ namespace ASCII_Invaders
                     if (CheckEnemyHit(bullets[b]))
                     {
                         bullets[b].Shot = false;
-                        if (AllEnemiesWereKilled())
+                        if (ThereIsNoEnemyLeft())
                         {
                             NextLevel();
                             return;
@@ -449,6 +492,10 @@ namespace ASCII_Invaders
             // Game loop
             while (keepRunning)
             {
+                if (Level == 0)
+                {
+                    NextLevel();
+                }
                 cannon.Draw();
                 UpdateBullets();
                 Thread.Sleep(Constant.OneSecond / 50);

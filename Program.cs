@@ -127,6 +127,7 @@ namespace ASCII_Invaders
             if (Level == Constant.FinalLevel)
             {
                 // Last level reached - Congratulations
+                Congratulations();
             }
 
             // Increment level number
@@ -146,6 +147,7 @@ namespace ASCII_Invaders
 
         private static void Congratulations()
         {
+            Util.PlaySound(Resource1.congrats);
             for (var row = Constant.BattleFieldBottom - 8; row > Constant.BattleFieldTop; row--) {
                 Util.WriteAt(7, row, "╔═══╗                     ╔╗     ");
                 Util.WriteAt(7, row + 1, "║╔═╗║                    ╔╝╚╗    ");
@@ -158,8 +160,10 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 8, "                                 ");
                 Util.Wait(Constant.OneSecond / 10);
 
-                Level = 0;
             }
+            Level = 0;
+            Util.Wait(Constant.OneSecond * 3);
+            ClearBattleField();
         }
         private static void ShowSplashScreen()
         {

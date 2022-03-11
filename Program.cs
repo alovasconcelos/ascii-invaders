@@ -166,7 +166,7 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 13, "                                       ");
                 Thread.Sleep(Constant.OneSecond / 10);
             }
-            Thread.Sleep(Constant.OneSecond * 5);
+            Thread.Sleep(Constant.OneSecond * 3);
             ClearBattleField();
         }
 
@@ -302,10 +302,10 @@ namespace ASCII_Invaders
 
         private static void ClearBattleField()
         {
-            for (var row = Constant.BattleFieldBottom; row > Constant.BattleFieldTop; row--)
+            for (var row = Constant.BattleFieldBottom; row >= Constant.BattleFieldTop; row--)
             {
                 Util.WriteAt(1, row, "                                                  ");
-                Thread.Sleep(Constant.OneSecond / 10);
+                Thread.Sleep(Constant.OneSecond / 20);
             }
         }
         private static void Finish()
@@ -333,6 +333,20 @@ namespace ASCII_Invaders
 
         }
 
+        private static void ConfirmExit()
+        {
+            // Clear the battlefield
+            ClearBattleField();
+            Util.WriteAt(4, 10, "Press Y to exit or any other key to continue");
+            if (Console.ReadKey().Key.Equals(ConsoleKey.Y)) {
+                keepRunning = false;
+            }
+            Util.WriteAt(4, 10, "                                            ");
+            cannon.Draw();
+            UpdateBullets();
+            UpdateEnemies();
+        }
+
         private static void CheckKeypressed()
         {
             if (Console.KeyAvailable)
@@ -353,7 +367,7 @@ namespace ASCII_Invaders
                         PlaySound = !PlaySound;
                         break;
                     case ConsoleKey.Escape:
-                        keepRunning = false;
+                        ConfirmExit();
                         break;
                 }
             }

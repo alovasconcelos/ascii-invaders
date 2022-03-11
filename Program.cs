@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace ASCII_Invaders
 {
@@ -145,6 +144,23 @@ namespace ASCII_Invaders
             ShowLevelSplashScreen();
         }
 
+        private static void Congratulations()
+        {
+            for (var row = Constant.BattleFieldBottom - 8; row > Constant.BattleFieldTop; row--) {
+                Util.WriteAt(7, row, "╔═══╗                     ╔╗     ");
+                Util.WriteAt(7, row + 1, "║╔═╗║                    ╔╝╚╗    ");
+                Util.WriteAt(7, row + 2, "║║ ╚╝╔══╗╔═╗ ╔══╗╔═╗╔══╗ ╚╗╔╝╔══╗");
+                Util.WriteAt(7, row + 3, "║║ ╔╗║╔╗║║╔╗╗║╔╗║║╔╝╚ ╗║  ║║ ║══╣");
+                Util.WriteAt(7, row + 4, "║╚═╝║║╚╝║║║║║║╚╝║║║ ║╚╝╚╗ ║╚╗╠══║");
+                Util.WriteAt(7, row + 5, "╚═══╝╚══╝╚╝╚╝╚═╗║╚╝ ╚═══╝ ╚═╝╚══╝");
+                Util.WriteAt(7, row + 6, "             ╔═╝║                ");
+                Util.WriteAt(7, row + 7, "             ╚══╝                ");
+                Util.WriteAt(7, row + 8, "                                 ");
+                Util.Wait(Constant.OneSecond / 10);
+
+                Level = 0;
+            }
+        }
         private static void ShowSplashScreen()
         {
             for (var row = Constant.BattleFieldBottom - 13; row > Constant.BattleFieldTop; row--)
@@ -163,9 +179,9 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 11, "       ╚══╝╚╝╚╝ ╚╝ ╚═══╝╚══╝╚══╝╚╝ ╚══╝");
                 Util.WriteAt(7, row + 12, "               alovasconcelos.github.io");
                 Util.WriteAt(7, row + 13, "                                       ");
-                Thread.Sleep(Constant.OneSecond / 10);
+                Util.Wait(Constant.OneSecond / 10);
             }
-            Thread.Sleep(Constant.OneSecond * 3);
+            Util.Wait(Constant.OneSecond * 3);
             ClearBattleField();
         }
 
@@ -187,9 +203,9 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 10, "                       ");
                 Util.WriteAt(7, row + 11, "    Your score: " + Score.ToString().PadLeft(6, '0'));
                 Util.WriteAt(7, row + 12, "                       ");
-                Thread.Sleep(Constant.OneSecond / 10);
+                Util.Wait(Constant.OneSecond / 10);
             }
-            Thread.Sleep(Constant.OneSecond * 5);
+            Util.Wait(Constant.OneSecond * 5);
             Level = 0;
             Score = 0;
             ClearBattleField();
@@ -207,7 +223,7 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 4, "#       #        #  #   #       #     ");
                 Util.WriteAt(7, row + 5, "######  ######    ##    ######  ######");
                 Util.WriteAt(7, row + 6, "                                      ");
-                Thread.Sleep(Constant.OneSecond / 10);
+                Util.Wait(Constant.OneSecond / 10);
             }
 
             switch (Level)
@@ -295,7 +311,7 @@ namespace ASCII_Invaders
                     Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ");
                     break;
             }
-            Thread.Sleep(Constant.OneSecond * 2);
+            Util.Wait(Constant.OneSecond * 2);
             ClearBattleField();
         }
 
@@ -304,7 +320,7 @@ namespace ASCII_Invaders
             for (var row = Constant.BattleFieldBottom; row >= Constant.BattleFieldTop; row--)
             {
                 Util.WriteAt(1, row, "                                                  ");
-                Thread.Sleep(Constant.OneSecond / 20);
+                Util.Wait(Constant.OneSecond / 20);
             }
         }
         private static void Finish()
@@ -490,7 +506,7 @@ namespace ASCII_Invaders
                             return;
                         }
                     }
-                    Thread.Sleep(5);
+                    Util.Wait(5);
                     bullets[b].Clear();
                     if (bullets[b].YPos-- == Constant.BattleFieldTop)
                     {
@@ -512,7 +528,7 @@ namespace ASCII_Invaders
                 }
                 cannon.Draw();
                 UpdateBullets();
-                Thread.Sleep(Constant.OneSecond / 50);
+                Util.Wait(Constant.OneSecond / 50);
                 UpdateEnemies();
                 CheckKeypressed();
              }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Media;
+using System.Threading;
 
 namespace ASCII_Invaders
 {
@@ -47,6 +48,11 @@ namespace ASCII_Invaders
             {
                 outputFile.WriteLine(Program.BestScore);
             }
+        }
+
+        public static void Wait(int milliseconds)
+        {
+            Thread.Sleep(milliseconds);
         }
     }
 }

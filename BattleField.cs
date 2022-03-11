@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ASCII_Invaders
+﻿namespace ASCII_Invaders
 {
     class BattleField
     {
@@ -17,7 +12,7 @@ namespace ASCII_Invaders
                 Util.WriteAt(0, row, "|                                                  |");
             }
             Util.WriteAt(0, Constant.BattleFieldBottom + 1, "+--------------------------------------------------+");
-            Util.WriteAt(0, Constant.BattleFieldStatusBar , "|Sound:on |Stage: |Score:       |Best Score:       |");
+            Util.WriteAt(0, Constant.BattleFieldStatusBar , "|Sound:on |Level: |Score:       |Best Score:       |");
             Util.WriteAt(0, Constant.BattleFieldStatusBar + 1, "+--------------------------------------------------+");
         }
     }

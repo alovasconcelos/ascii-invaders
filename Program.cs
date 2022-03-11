@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 
 namespace ASCII_Invaders
@@ -71,7 +70,7 @@ namespace ASCII_Invaders
             set
             {
                 _level = value;
-                Util.WriteAt(Constant.BattleFieldStageCol, Constant.BattleFieldStatusBar, _level.ToString());
+                Util.WriteAt(Constant.BattleFieldLevelCol, Constant.BattleFieldStatusBar, _level.ToString());
             }
         }
 
@@ -325,7 +324,7 @@ namespace ASCII_Invaders
                     bullet.Shot = true;
                     bullet.XPos = cannon.XPos + 1;
                     bullet.YPos = cannon.YPos - 1;
-                    Util.PlaySound(Constant.ShotSound);
+                    Util.PlaySound(Resource1.hit);
                     return;
                 }
             }
@@ -453,7 +452,8 @@ namespace ASCII_Invaders
                         enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
                         Score += Level * row;
-                        Util.PlaySound(Constant.ExplosionSound);
+                        Util.PlaySound(Resource1.explosion);
+
                         return true;
                     }
                 }

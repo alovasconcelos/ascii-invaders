@@ -14,14 +14,14 @@ namespace ASCII_Invaders
             Console.Write(content);
         }
 
-        public static void PlaySound(string file)
+        public static void PlaySound(Stream file)
         {
             if (!Program.PlaySound)
             {
                 return;
             }
             // Create new SoundPlayer in the using statement.
-            using (SoundPlayer player = new SoundPlayer($@"{exePath}\{file}"))
+            using (SoundPlayer player = new SoundPlayer(file))
             {
                 // Use PlaySync to load and then play the sound.
                 player.Play();

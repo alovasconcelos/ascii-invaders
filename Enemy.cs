@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ASCII_Invaders
+﻿namespace ASCII_Invaders
 {
     class Enemy : GameObject
     {

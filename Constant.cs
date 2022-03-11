@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ASCII_Invaders
+﻿namespace ASCII_Invaders
 {
     public static class Constant
     {
@@ -11,7 +7,7 @@ namespace ASCII_Invaders
         public static readonly int BattleFieldWidth = 50;
         public static readonly int BattleFieldStatusBar = 22;
         public static readonly int BattleFieldSoundStatusCol = 7;
-        public static readonly int BattleFieldStageCol = 17;
+        public static readonly int BattleFieldLevelCol = 17;
         public static readonly int BattleFieldScoreCol = 26;
         public static readonly int BattleFieldBestScoreCol = 45;
 

@@ -11,6 +11,8 @@ namespace ASCII_Invaders
         private static bool _playSound;
         private static float EnemiesTimer = 10;
 
+        private static int aliveEnemies;
+
         public static bool PlaySound
         {
             get
@@ -142,6 +144,8 @@ namespace ASCII_Invaders
             // Load enemies
             LoadEnemies();
 
+            aliveEnemies = Constant.EnemiesPerRow * Constant.EnemiesRows;
+
             ShowLevelSplashScreen();
         }
 
@@ -192,6 +196,7 @@ namespace ASCII_Invaders
         private static void GameOver()
         {
             ClearBattleField();
+            Util.PlaySound(Resource1.game_over);
             for (var row = Constant.BattleFieldBottom - 12; row > Constant.BattleFieldTop; row--)
             {
                 Util.WriteAt(7, row, "╔═══╗             ");
@@ -361,9 +366,17 @@ namespace ASCII_Invaders
                 keepRunning = false;
             }
             Util.WriteAt(4, 10, "                                            ");
-            cannon.Draw();
-            UpdateBullets();
-            UpdateEnemies();
+            Update();
+        }
+
+        private static void Pause()
+        {
+            // Clear the battlefield
+            ClearBattleField();
+            Util.WriteAt(4, 10, "Press any key to continue");
+            Console.ReadKey();            
+            Util.WriteAt(4, 10, "                                            ");
+            Update();
         }
 
         private static void CheckKeypressed()
@@ -384,6 +397,9 @@ namespace ASCII_Invaders
                         break;
                     case ConsoleKey.M:
                         PlaySound = !PlaySound;
+                        break;
+                    case ConsoleKey.P:
+                        Pause();
                         break;
                     case ConsoleKey.Escape:
                         ConfirmExit();
@@ -409,50 +425,54 @@ namespace ASCII_Invaders
 
         private static void UpdateEnemies()
         {
+            var goLeft = enemiesGoLeft;
+            Util.WriteAt(1, Constant.BattleFieldTop - 2, aliveEnemies.ToString());
             if (RandomizeEnemiesSpeed() > 0)
             {
                 return;
             }
 
+            var goDown = false;
             enemiesTick = Constant.EnemiesTimer;
             for (var row = 0; row < Constant.EnemiesRows; row++)
             {
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
                 {
+                    if (enemiesGoDown)
+                    {
+                        enemies[row, col].MoveDown();
+                    }
+                    if (enemiesGoLeft)
+                    {
+                        enemies[row, col].MoveLeft();
+                    }
+                    else
+                    {
+                        enemies[row, col].MoveRight();
+                    }
+
+                    if (TheEnemyLanded(enemies[row, col].YPos))
+                    {
+                        GameOver();
+                        return;
+                    }
                     if (enemies[row, col].Alive)
                     {
-                        if (enemiesGoDown)
+                        if (enemies[row, col].XPos == 1)
                         {
-                            enemies[row, col].MoveDown();
+                            goLeft = false;
+                            goDown = true;
                         }
-                        if (enemiesGoLeft)
+                        if (enemies[row, col].XPos == 48)
                         {
-                            enemies[row, col].MoveLeft();
-                        }
-                        else
-                        {
-                            enemies[row, col].MoveRight();
-                        }
-
-                        if (TheEnemyLanded(enemies[row, col].YPos))
-                        {
-                            GameOver();
-                            return;
+                            goLeft = true;
+                            goDown = true;
                         }
                     }
                 }
             }
-            enemiesGoDown = false;
-            if (enemies[0, 0].XPos == 1)
-            {
-                enemiesGoLeft = false;
-                enemiesGoDown = true;
-            }
-            if (enemies[0, Constant.EnemiesPerRow -1].XPos == 48)
-            {
-                enemiesGoLeft = true;
-                enemiesGoDown = true;
-            }
+            enemiesGoLeft = goLeft;
+            enemiesGoDown = goDown;
         }
 
         static bool CheckEnemyHit(Bullet bullet)
@@ -461,19 +481,17 @@ namespace ASCII_Invaders
             {
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
                 {
-                    var enemy = enemies[row, col];
-                    if (enemy.Alive &&
-                        enemy.YPos == bullet.YPos &&
-                        (enemy.XPos == bullet.XPos ||
-                         enemy.XPos + 1 == bullet.XPos ||
-                         enemy.XPos + 2 == bullet.XPos
+                    if (enemies[row, col].Alive &&
+                        enemies[row, col].YPos == bullet.YPos &&
+                        (enemies[row, col].XPos == bullet.XPos ||
+                         enemies[row, col].XPos + 1 == bullet.XPos ||
+                         enemies[row, col].XPos + 2 == bullet.XPos
                         ))
                     {
                         enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
                         Score += Level * row;
-                        Util.PlaySound(Resource1.explosion);
-
+                        Util.PlaySound(Resource1.explosion);                        
                         return true;
                     }
                 }
@@ -483,32 +501,20 @@ namespace ASCII_Invaders
 
         static bool ThereIsNoEnemyLeft()
         {
-            foreach(var enemy in enemies)
-            {
-                if (enemy.Alive)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return aliveEnemies == 0;
         }
 
          static void UpdateBullets()
         {
             for(var b = 0; b < Constant.Bullets; b++)
-            {
-                
+            {                
                 if (bullets[b].Shot)
                 {
                     bullets[b].Draw();
                     if (CheckEnemyHit(bullets[b]))
                     {
                         bullets[b].Shot = false;
-                        if (ThereIsNoEnemyLeft())
-                        {
-                            NextLevel();
-                            return;
-                        }
+                        aliveEnemies--;
                     }
                     Util.Wait(5);
                     bullets[b].Clear();
@@ -517,6 +523,18 @@ namespace ASCII_Invaders
                         bullets[b].Shot = false;
                     }
                 }                
+            }
+        }
+
+        static void Update()
+        {
+            cannon.Draw();
+            UpdateBullets();
+            UpdateEnemies();
+            if (ThereIsNoEnemyLeft())
+            {
+                NextLevel();
+                return;
             }
         }
         static void Main(string[] args)
@@ -530,11 +548,9 @@ namespace ASCII_Invaders
                 {
                     NextLevel();
                 }
-                cannon.Draw();
-                UpdateBullets();
-                Util.Wait(Constant.OneSecond / 50);
-                UpdateEnemies();
                 CheckKeypressed();
+                Update();
+                Util.Wait(Constant.OneSecond / 50);
              }
 
             // The end

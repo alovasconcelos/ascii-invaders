@@ -3,17 +3,21 @@
     class Enemy : GameObject
     {
         public bool Alive { get; set; }
-        public Enemy()
+        public Enemy(string sprite = ">o<", int xPos = 0, int yPos = 0) :
+            base(sprite, xPos, yPos)
         {
-            Sprite = ">o<";
             Alive = true;
         }
-        public void Draw()
+
+
+        public override void Draw()
         {
-            if (Alive)
+            if (!Alive)
             {
-                base.Draw();
+                Clear();
+                return;
             }
+            base.Draw();
         }
     }
 }

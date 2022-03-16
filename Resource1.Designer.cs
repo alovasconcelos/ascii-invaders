@@ -81,6 +81,15 @@ namespace ASCII_Invaders {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream game_over {
+            get {
+                return ResourceManager.GetStream("game_over", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream hit {
             get {
                 return ResourceManager.GetStream("hit", resourceCulture);

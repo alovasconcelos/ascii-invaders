@@ -8,7 +8,14 @@ namespace ASCII_Invaders
         public int XPos { get; set; }
         public int YPos { get; set; }
 
-        public void Draw()
+        public GameObject(string sprite = " ", int xPos = 0, int yPos = 0)
+        {
+            Sprite = sprite;
+            XPos = xPos;
+            YPos = yPos;
+        }
+
+        public virtual void Draw()
         {
             Util.WriteAt(XPos, YPos, Sprite);
         }

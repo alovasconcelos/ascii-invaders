@@ -9,9 +9,6 @@ namespace ASCII_Invaders
 
         private static bool keepRunning;
         private static bool _playSound;
-        private static float EnemiesTimer = 10;
-
-        private static int aliveEnemies;
 
         public static bool PlaySound
         {
@@ -144,9 +141,20 @@ namespace ASCII_Invaders
             // Load enemies
             LoadEnemies();
 
-            aliveEnemies = Constant.EnemiesPerRow * Constant.EnemiesRows;
-
             ShowLevelSplashScreen();
+        }
+
+        private static int AliveEnemies()
+        {
+            var result = 0;
+            foreach(var enemy in enemies)
+            {
+                if (enemy.Alive)
+                {
+                    result++;
+                }
+            }
+            return result;
         }
 
         private static void Congratulations()
@@ -426,11 +434,6 @@ namespace ASCII_Invaders
         private static void UpdateEnemies()
         {
             var goLeft = enemiesGoLeft;
-            Util.WriteAt(1, Constant.BattleFieldTop - 2, aliveEnemies.ToString());
-            if (RandomizeEnemiesSpeed() > 0)
-            {
-                return;
-            }
 
             var goDown = false;
             enemiesTick = Constant.EnemiesTimer;
@@ -491,17 +494,16 @@ namespace ASCII_Invaders
                         enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
                         Score += Level * row;
-                        Util.PlaySound(Resource1.explosion);                        
+                        Util.PlaySound(Resource1.explosion);
+                        if (AliveEnemies() == 0)
+                        {
+                            NextLevel();
+                        }
                         return true;
                     }
                 }
             }
             return false;
-        }
-
-        static bool ThereIsNoEnemyLeft()
-        {
-            return aliveEnemies == 0;
         }
 
          static void UpdateBullets()
@@ -514,7 +516,6 @@ namespace ASCII_Invaders
                     if (CheckEnemyHit(bullets[b]))
                     {
                         bullets[b].Shot = false;
-                        aliveEnemies--;
                     }
                     Util.Wait(5);
                     bullets[b].Clear();
@@ -529,13 +530,11 @@ namespace ASCII_Invaders
         static void Update()
         {
             cannon.Draw();
-            UpdateBullets();
-            UpdateEnemies();
-            if (ThereIsNoEnemyLeft())
+            if (RandomizeEnemiesSpeed() < 5f)
             {
-                NextLevel();
-                return;
+                UpdateEnemies();
             }
+            UpdateBullets();
         }
         static void Main(string[] args)
         {

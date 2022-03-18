@@ -8,51 +8,59 @@ namespace ASCII_Invaders
         public int XPos { get; set; }
         public int YPos { get; set; }
 
-        public GameObject(string sprite = " ", int xPos = 0, int yPos = 0)
+        public bool Visible { get; set; }
+
+        public GameObject(string sprite = " ", int xPos = 0, int yPos = 0, bool visible = true)
         {
             Sprite = sprite;
             XPos = xPos;
             YPos = yPos;
+            Visible = visible;
         }
 
-        public virtual void Draw()
+        public void Draw()
         {
-            Util.WriteAt(XPos, YPos, Sprite);
+            if  (Visible)
+            {
+                Util.WriteAt(XPos, YPos, Sprite);
+            }
         }
 
         public void Clear()
         {
-            Util.WriteAt(XPos, YPos, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+            if (Visible)
+            {
+                Util.WriteAt(XPos, YPos, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+            }
         }
 
-        public void MoveLeft()
+        public bool MoveLeft()
         {
             if (XPos > 1)
             {
-                Clear();
                 XPos--;
-                Draw();
+                return true;
             }
+            return false;
         }
 
-        public void MoveRight()
+        public bool MoveRight()
         {
             if (XPos < 51 - Sprite.Length)
             {
-                Clear();
                 XPos++;
-                Draw();
+                return true;
             }
+            return false;
         }
-        public void MoveDown()
+        public bool MoveDown()
         {
             if (YPos < Constant.BattleFieldBottom)
             {
-                Clear();
                 YPos++;
-                Draw();
+                return true;
             }
+            return false;
         }
-
     }
 }

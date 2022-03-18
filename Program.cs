@@ -10,6 +10,8 @@ namespace ASCII_Invaders
         private static bool keepRunning;
         private static bool _playSound;
 
+        public static int aliveEnemies;
+
         public static bool PlaySound
         {
             get
@@ -140,22 +142,10 @@ namespace ASCII_Invaders
 
             // Load enemies
             LoadEnemies();
-
+            aliveEnemies = Constant.EnemiesPerRow * Constant.EnemiesRows;
             ShowLevelSplashScreen();
         }
 
-        private static int AliveEnemies()
-        {
-            var result = 0;
-            foreach(var enemy in enemies)
-            {
-                if (enemy.Alive)
-                {
-                    result++;
-                }
-            }
-            return result;
-        }
 
         private static void Congratulations()
         {
@@ -395,9 +385,11 @@ namespace ASCII_Invaders
                 switch (keyPressed)
                 {
                     case ConsoleKey.LeftArrow:
+                        cannon.Clear();
                         cannon.MoveLeft();
                         break;
                     case ConsoleKey.RightArrow:
+                        cannon.Clear();
                         cannon.MoveRight();
                         break;
                     case ConsoleKey.Spacebar:
@@ -434,7 +426,7 @@ namespace ASCII_Invaders
         private static void UpdateEnemies()
         {
             var goLeft = enemiesGoLeft;
-
+            
             var goDown = false;
             enemiesTick = Constant.EnemiesTimer;
             for (var row = 0; row < Constant.EnemiesRows; row++)
@@ -443,15 +435,21 @@ namespace ASCII_Invaders
                 {
                     if (enemiesGoDown)
                     {
+                        enemies[row, col].Clear();
                         enemies[row, col].MoveDown();
+                        enemies[row, col].Draw();
                     }
                     if (enemiesGoLeft)
                     {
+                        enemies[row, col].Clear();
                         enemies[row, col].MoveLeft();
+                        enemies[row, col].Draw();
                     }
                     else
                     {
+                        enemies[row, col].Clear();
                         enemies[row, col].MoveRight();
+                        enemies[row, col].Draw();
                     }
 
                     if (TheEnemyLanded(enemies[row, col].YPos))
@@ -459,7 +457,7 @@ namespace ASCII_Invaders
                         GameOver();
                         return;
                     }
-                    if (enemies[row, col].Alive)
+                    if (enemies[row, col].Visible)
                     {
                         if (enemies[row, col].XPos == 1)
                         {
@@ -484,21 +482,18 @@ namespace ASCII_Invaders
             {
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
                 {
-                    if (enemies[row, col].Alive &&
+                    if (enemies[row, col].Visible &&
                         enemies[row, col].YPos == bullet.YPos &&
                         (enemies[row, col].XPos == bullet.XPos ||
                          enemies[row, col].XPos + 1 == bullet.XPos ||
                          enemies[row, col].XPos + 2 == bullet.XPos
                         ))
                     {
-                        enemies[row, col].Alive = false;
                         enemies[row, col].Clear();
+                        enemies[row, col].Visible = false;
                         Score += Level * row;
                         Util.PlaySound(Resource1.explosion);
-                        if (AliveEnemies() == 0)
-                        {
-                            NextLevel();
-                        }
+                        aliveEnemies--;
                         return true;
                     }
                 }
@@ -530,6 +525,10 @@ namespace ASCII_Invaders
         static void Update()
         {
             cannon.Draw();
+            if (aliveEnemies == 0)
+            {
+                NextLevel();
+            }
             if (RandomizeEnemiesSpeed() < 5f)
             {
                 UpdateEnemies();
@@ -550,7 +549,7 @@ namespace ASCII_Invaders
                 CheckKeypressed();
                 Update();
                 Util.Wait(Constant.OneSecond / 50);
-             }
+            }
 
             // The end
             Finish();

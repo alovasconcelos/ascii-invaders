@@ -1,4 +1,6 @@
-﻿namespace ASCII_Invaders
+﻿using System;
+
+namespace ASCII_Invaders
 {
     class Bullet : GameObject
     {
@@ -7,6 +9,7 @@
         {
             Sprite = "^";
             Shot = false;
+            Color = ConsoleColor.Yellow;
         }
     }
 }

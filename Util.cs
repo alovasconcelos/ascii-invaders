@@ -9,10 +9,13 @@ namespace ASCII_Invaders
     {
         public static string exePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-        public static void WriteAt(int col, int row, string content)
+        public static void WriteAt(int col, int row, string content, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(Constant.ScreenLeft + col, Constant.ScreenTop + row);
+
+            Console.ForegroundColor = color;
             Console.Write(content);
+            Console.ResetColor();
         }
 
         public static int ReadBestScore()

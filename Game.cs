@@ -238,13 +238,13 @@ namespace ASCII_Invaders
                 Util.WriteAt(7, row + 3, "║║╔═╗╚ ╗║ ║╚╝║║╔╗║");
                 Util.WriteAt(7, row + 4, "║╚╩═║║╚╝╚╗║║║║║║═╣");
                 Util.WriteAt(7, row + 5, "╚═══╝╚═══╝╚╩╩╝╚══╝");
-                Util.WriteAt(7, row + 6, "        ╔══╗╔╗╔╗╔══╗╔═╗");
-                Util.WriteAt(7, row + 7, "        ║╔╗║║╚╝║║╔╗║║╔╝");
-                Util.WriteAt(7, row + 8, "        ║╚╝║╚╗╔╝║║═╣║║ ");
-                Util.WriteAt(7, row + 9, "        ╚══╝ ╚╝ ╚══╝╚╝ ");
-                Util.WriteAt(7, row + 10, "                       ");
+                Util.WriteAt(7, row + 6, "                  ╔══╗╔╗╔╗╔══╗╔═╗");
+                Util.WriteAt(7, row + 7, "                  ║╔╗║║╚╝║║╔╗║║╔╝");
+                Util.WriteAt(7, row + 8, "                  ║╚╝║╚╗╔╝║║═╣║║ ");
+                Util.WriteAt(7, row + 9, "                  ╚══╝ ╚╝ ╚══╝╚╝ ");
+                Util.WriteAt(7, row + 10, "                                 ");
                 Util.WriteAt(7, row + 11, "    Your score: " + Score.ToString().PadLeft(6, '0'));
-                Util.WriteAt(7, row + 12, "                       ");
+                Util.WriteAt(7, row + 12, "                                 ");
                 Util.Wait(Constant.OneSecond / 10);
             }
             Util.Wait(Constant.OneSecond * 5);
@@ -525,10 +525,9 @@ namespace ASCII_Invaders
                          enemies[row, col].XPos + 2 == bullet.XPos
                         ))
                     {
-                        enemies[row, col].Clear();
-                        enemies[row, col].Visible = false;
                         Score += Level * row;
                         PlayWavFile(Resource1.explosion);
+                        enemies[row, col].Destroy();
                         aliveEnemies--;
                         return true;
                     }

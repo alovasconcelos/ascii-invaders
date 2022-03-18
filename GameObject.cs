@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ASCII_Invaders
 {
@@ -7,22 +8,23 @@ namespace ASCII_Invaders
         public string Sprite { get; set; }
         public int XPos { get; set; }
         public int YPos { get; set; }
-
         public bool Visible { get; set; }
+        public ConsoleColor Color { get; set; }
 
-        public GameObject(string sprite = " ", int xPos = 0, int yPos = 0, bool visible = true)
+        public GameObject()
         {
-            Sprite = sprite;
-            XPos = xPos;
-            YPos = yPos;
-            Visible = visible;
+            Sprite = " ";
+            XPos = 0;
+            YPos = 0;
+            Visible = true;
+            Color = ConsoleColor.White;
         }
 
         public void Draw()
         {
             if  (Visible)
             {
-                Util.WriteAt(XPos, YPos, Sprite);
+                Util.WriteAt(XPos, YPos, Sprite, Color);
             }
         }
 

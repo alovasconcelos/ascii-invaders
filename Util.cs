@@ -11,22 +11,8 @@ namespace ASCII_Invaders
 
         public static void WriteAt(int col, int row, string content)
         {
-            Console.SetCursorPosition(Program.screenLeft + col, Program.screenTop + row);
+            Console.SetCursorPosition(Constant.ScreenLeft + col, Constant.ScreenTop + row);
             Console.Write(content);
-        }
-
-        public static void PlaySound(Stream file)
-        {
-            if (!Program.PlaySound)
-            {
-                return;
-            }
-            // Create new SoundPlayer in the using statement.
-            using (SoundPlayer player = new SoundPlayer(file))
-            {
-                // Use PlaySync to load and then play the sound.
-                player.Play();
-            }
         }
 
         public static int ReadBestScore()
@@ -42,11 +28,11 @@ namespace ASCII_Invaders
             return 0;
         }
 
-        public static void WriteBestScore()
+        public static void WriteBestScore(int score)
         {
             using (StreamWriter outputFile = new StreamWriter(Constant.ScoreFile))
             {
-                outputFile.WriteLine(Program.BestScore);
+                outputFile.WriteLine(score);
             }
         }
 

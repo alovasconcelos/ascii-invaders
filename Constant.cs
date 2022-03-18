@@ -1,7 +1,12 @@
-﻿namespace ASCII_Invaders
+﻿using System;
+
+namespace ASCII_Invaders
 {
     public static class Constant
     {
+        public static readonly int ScreenTop = Console.CursorTop;
+        public static readonly int ScreenLeft = Console.CursorLeft;
+
         public static readonly int BattleFieldTop = 3;
         public static readonly int BattleFieldBottom = 20;
         public static readonly int BattleFieldWidth = 50;

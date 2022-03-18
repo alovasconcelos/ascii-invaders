@@ -2,6 +2,7 @@
 {
     class BattleField
     {
+          
         public void Draw()
         {
             Util.WriteAt(0, 0, "+--------------------------------------------------+");

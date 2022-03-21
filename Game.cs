@@ -144,7 +144,7 @@ namespace ASCII_Invaders
 
         private void PlayWavFile(Stream file)
         {
-            if (PlaySound)
+            if (!PlaySound)
             {
                 return;
             }

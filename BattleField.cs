@@ -1,4 +1,6 @@
-﻿namespace ASCII_Invaders
+﻿using System;
+
+namespace ASCII_Invaders
 {
     class BattleField
     {
@@ -6,7 +8,7 @@
         public void Draw()
         {
             Util.WriteAt(0, 0, "+--------------------------------------------------+");
-            Util.WriteAt(0, 1, "|                  ASCII INVADERS                  |");
+            Util.WriteAt(0, 1, "|                  ASCII INVADERS                  |", ConsoleColor.Blue);
             Util.WriteAt(0, 2, "+--------------------------------------------------+");
             for (int row = Constant.BattleFieldTop; row <= Constant.BattleFieldBottom; row++)
             {

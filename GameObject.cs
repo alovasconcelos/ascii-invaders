@@ -18,6 +18,7 @@ namespace ASCII_Invaders
             YPos = 0;
             Visible = true;
             Color = ConsoleColor.White;
+
         }
 
         public void Draw()
@@ -40,6 +41,7 @@ namespace ASCII_Invaders
         {
             if (XPos > 1)
             {
+                Clear();
                 XPos--;
                 return true;
             }
@@ -50,6 +52,7 @@ namespace ASCII_Invaders
         {
             if (XPos < 51 - Sprite.Length)
             {
+                Clear();
                 XPos++;
                 return true;
             }
@@ -59,6 +62,7 @@ namespace ASCII_Invaders
         {
             if (YPos < Constant.BattleFieldBottom)
             {
+                Clear();
                 YPos++;
                 return true;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading;
 
@@ -16,6 +17,11 @@ namespace ASCII_Invaders
             Console.ForegroundColor = color;
             Console.Write(content);
             Console.ResetColor();
+        }
+
+        public static void ClearLine(int row)
+        {
+            WriteAt(1, row, string.Concat(Enumerable.Repeat(" ", 50)));
         }
 
         public static int ReadBestScore()
@@ -43,5 +49,6 @@ namespace ASCII_Invaders
         {
             Thread.Sleep(milliseconds);
         }
+
     }
 }

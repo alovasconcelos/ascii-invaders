@@ -7,22 +7,12 @@ namespace ASCII_Invaders
     class Game
     {
         private bool keepRunning;
-        private bool _playSound;
+
+        private int clockTicking = 0;
 
         public  int aliveEnemies;
 
-        public bool PlaySound
-        {
-            get
-            {
-                return _playSound;
-            }
-            set
-            {
-                _playSound = value;
-                Util.WriteAt(Constant.BattleFieldSoundStatusCol, Constant.BattleFieldStatusBar, _playSound ? "On " : "Off");
-            }
-        }
+        public bool PlaySound { get; set; }
 
         private  int _score;
         public  int Score
@@ -34,7 +24,6 @@ namespace ASCII_Invaders
             set
             {
                 _score = value;
-                Util.WriteAt(Constant.BattleFieldScoreCol, Constant.BattleFieldStatusBar, Score.ToString().PadLeft(6, '0'));
                 if (_score > _bestScore)
                 {
                     BestScore = _score;
@@ -53,25 +42,11 @@ namespace ASCII_Invaders
             set
             {
                 _bestScore = value;
-                Util.WriteAt(Constant.BattleFieldBestScoreCol, Constant.BattleFieldStatusBar, _bestScore.ToString().PadLeft(6, '0'));
                 Util.WriteBestScore(BestScore);
             }
         }
 
-        private int _level = 0;
-
-        public  int Level
-        {
-            get
-            {
-                return _level;
-            }
-            set
-            {
-                _level = value;
-                Util.WriteAt(Constant.BattleFieldLevelCol, Constant.BattleFieldStatusBar, _level.ToString());
-            }
-        }
+        public  int Level { get; set; }
 
         private  bool enemiesGoLeft;
         private  bool enemiesGoDown;
@@ -83,7 +58,7 @@ namespace ASCII_Invaders
         private  Bullet[] bullets = new Bullet[Constant.Bullets];
         private  Enemy[,] enemies = new Enemy[Constant.EnemiesRows, Constant.EnemiesPerRow];
 
-        private  float enemiesTick = 10f;
+        private  float enemiesSpeed = 10f;
         private  Random random = new Random();
 
         public void Run()
@@ -97,9 +72,13 @@ namespace ASCII_Invaders
                 {
                     NextLevel();
                 }
+
+                // Check if any key was pressed
                 CheckKeypressed();
+
+                // Execute 60 times per second
+                Util.Wait(Constant.OneSecond / 60);
                 Update();
-                Util.Wait(Constant.OneSecond / 50);
             }
 
             // The end
@@ -443,8 +422,8 @@ namespace ASCII_Invaders
 
         private  float RandomizeEnemiesSpeed()
         {
-            enemiesTick = enemiesTick - (float)random.NextDouble() * _level;
-            return enemiesTick;
+            enemiesSpeed = enemiesSpeed - (float)random.NextDouble() * Level;
+            return enemiesSpeed;
         }
 
         private  bool TheEnemyLanded(int row)
@@ -461,7 +440,7 @@ namespace ASCII_Invaders
             var goLeft = enemiesGoLeft;
 
             var goDown = false;
-            enemiesTick = Constant.EnemiesTimer;
+            enemiesSpeed = Constant.EnemiesTimer;
             for (var row = 0; row < Constant.EnemiesRows; row++)
             {
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
@@ -541,7 +520,7 @@ namespace ASCII_Invaders
                     {
                         bullets[b].Shot = false;
                     }
-                    Util.Wait(15);
+                    Util.Wait(17);
                     bullets[b].Clear();
                     if (bullets[b].YPos-- == Constant.BattleFieldTop)
                     {
@@ -551,8 +530,20 @@ namespace ASCII_Invaders
             }
         }
 
-         void Update()
+        void UpdateStatusBar()
         {
+            Util.WriteAt(Constant.BattleFieldSoundStatusCol, Constant.BattleFieldStatusBar, PlaySound ? "On " : "Off");
+            Util.WriteAt(Constant.BattleFieldLevelCol, Constant.BattleFieldStatusBar, Level.ToString());
+            Util.WriteAt(Constant.BattleFieldScoreCol, Constant.BattleFieldStatusBar, Score.ToString().PadLeft(6, '0'));
+            Util.WriteAt(Constant.BattleFieldBestScoreCol, Constant.BattleFieldStatusBar, _bestScore.ToString().PadLeft(6, '0'));
+        }
+
+        void Update()      
+         {
+            if (clockTicking++ == 59)
+            {
+                clockTicking = 0;
+            }
             cannon.Draw();
             if (aliveEnemies == 0)
             {
@@ -563,6 +554,7 @@ namespace ASCII_Invaders
                 UpdateEnemies();
             }
             UpdateBullets();
+            UpdateStatusBar();
         }
     }
 }

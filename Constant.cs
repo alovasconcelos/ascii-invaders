@@ -7,6 +7,7 @@ namespace ASCII_Invaders
         public static readonly int ScreenTop = Console.CursorTop;
         public static readonly int ScreenLeft = Console.CursorLeft;
 
+        public static readonly int BattleFieldLeft = 1;
         public static readonly int BattleFieldTop = 3;
         public static readonly int BattleFieldBottom = 20;
         public static readonly int BattleFieldWidth = 50;

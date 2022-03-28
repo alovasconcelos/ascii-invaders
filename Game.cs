@@ -92,8 +92,8 @@ namespace ASCII_Invaders
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
                 {
                     var enemy = new Enemy();
-                    enemy.YPos = 3 + row;
-                    enemy.XPos = 10 + 5 * col;
+                    enemy.Position.Y = 3 + row;
+                    enemy.Position.X = 10 + 5 * col;
                     enemies[row, col] = enemy;
                 }
             }
@@ -359,8 +359,8 @@ namespace ASCII_Invaders
                 {
                     // found an unfired bullet
                     bullet.Shot = true;
-                    bullet.XPos = cannon.XPos + 1;
-                    bullet.YPos = cannon.YPos - 1;
+                    bullet.Position.X = cannon.Position.X + 1;
+                    bullet.Position.Y = cannon.Position.Y - 1;
                     PlayWavFile(Resource1.hit);
                     return;
                 }
@@ -426,9 +426,9 @@ namespace ASCII_Invaders
             return enemiesSpeed;
         }
 
-        private  bool TheEnemyLanded(int row)
+        private  bool TheEnemyLanded(Enemy enemy)
         {
-            if (row == Constant.BattleFieldBottom)
+            if (enemy.Position.Y == Constant.BattleFieldBottom)
             {
                 return true;
             }
@@ -448,32 +448,29 @@ namespace ASCII_Invaders
                     if (enemiesGoDown)
                     {
                         enemies[row, col].MoveDown();
-                        enemies[row, col].Draw();
                     }
                     if (enemiesGoLeft)
                     {
                         enemies[row, col].MoveLeft();
-                        enemies[row, col].Draw();
                     }
                     else
                     {
                         enemies[row, col].MoveRight();
-                        enemies[row, col].Draw();
                     }
 
-                    if (TheEnemyLanded(enemies[row, col].YPos))
+                    if (TheEnemyLanded(enemies[row, col]))
                     {
                         GameOver();
                         return;
                     }
                     if (enemies[row, col].Visible)
                     {
-                        if (enemies[row, col].XPos == 1)
+                        if (enemies[row, col].Position.X == Constant.BattleFieldLeft)
                         {
                             goLeft = false;
                             goDown = true;
                         }
-                        if (enemies[row, col].XPos == 48)
+                        if (enemies[row, col].Position.Y == Constant.BattleFieldWidth - 2)
                         {
                             goLeft = true;
                             goDown = true;
@@ -492,10 +489,10 @@ namespace ASCII_Invaders
                 for (var col = 0; col < Constant.EnemiesPerRow; col++)
                 {
                     if (enemies[row, col].Visible &&
-                        enemies[row, col].YPos == bullet.YPos &&
-                        (enemies[row, col].XPos == bullet.XPos ||
-                         enemies[row, col].XPos + 1 == bullet.XPos ||
-                         enemies[row, col].XPos + 2 == bullet.XPos
+                        enemies[row, col].Position.Y == bullet.Position.Y &&
+                        (enemies[row, col].Position.X == bullet.Position.X ||
+                         enemies[row, col].Position.X + 1 == bullet.Position.X ||
+                         enemies[row, col].Position.X + 2 == bullet.Position.X
                         ))
                     {
                         Score += Level * row;
@@ -522,7 +519,7 @@ namespace ASCII_Invaders
                     }
                     Util.Wait(17);
                     bullets[b].Clear();
-                    if (bullets[b].YPos-- == Constant.BattleFieldTop)
+                    if (bullets[b].Position.Y-- == Constant.BattleFieldTop)
                     {
                         bullets[b].Shot = false;
                     }

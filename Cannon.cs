@@ -8,8 +8,8 @@ namespace ASCII_Invaders
         {
             Color = ConsoleColor.Blue;
             Sprite = "^-^";
-            YPos = Constant.BattleFieldBottom;
-            XPos = (Constant.BattleFieldWidth - 2) / 2 - 1;            
+            Position = new Position((Constant.BattleFieldWidth - 2) / 2 - 1, Constant.BattleFieldBottom);
+            PreviousPosition = new Position((Constant.BattleFieldWidth - 2) / 2 - 1, Constant.BattleFieldBottom);
         }
 
     }

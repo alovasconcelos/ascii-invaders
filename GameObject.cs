@@ -6,26 +6,31 @@ namespace ASCII_Invaders
     public class GameObject
     {
         public string Sprite { get; set; }
-        public int XPos { get; set; }
-        public int YPos { get; set; }
+        public Position Position { get; set; }
+        public Position PreviousPosition { get; set; }
         public bool Visible { get; set; }
         public ConsoleColor Color { get; set; }
 
         public GameObject()
         {
             Sprite = " ";
-            XPos = 0;
-            YPos = 0;
+            Position = new Position(0, 0);
+            PreviousPosition = new Position(0, 0);
             Visible = true;
             Color = ConsoleColor.White;
-
         }
 
         public void Draw()
         {
             if  (Visible)
             {
-                Util.WriteAt(XPos, YPos, Sprite, Color);
+                // If there's a previous position set, then clear that 
+                if (PreviousPosition.X > 0)
+                {
+                    Util.WriteAt(PreviousPosition.X, PreviousPosition.Y, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+                }
+                Util.WriteAt(Position.X, Position.Y, Sprite, Color);
+                PreviousPosition.SetPosition(Position);
             }
         }
 
@@ -33,40 +38,31 @@ namespace ASCII_Invaders
         {
             if (Visible)
             {
-                Util.WriteAt(XPos, YPos, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+                Util.WriteAt(Position.X, Position.Y, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
             }
         }
 
-        public bool MoveLeft()
+        public void MoveLeft()
         {
-            if (XPos > 1)
-            {
-                Clear();
-                XPos--;
-                return true;
-            }
-            return false;
+            Position.MoveLeft();
+            Draw();
         }
 
-        public bool MoveRight()
+        public void MoveRight()
         {
-            if (XPos < 51 - Sprite.Length)
-            {
-                Clear();
-                XPos++;
-                return true;
-            }
-            return false;
+            Position.MoveRight();
+            Draw();
         }
-        public bool MoveDown()
+
+        public void MoveUp()
         {
-            if (YPos < Constant.BattleFieldBottom)
-            {
-                Clear();
-                YPos++;
-                return true;
-            }
-            return false;
+            Position.MoveUp();
+            Draw();
+        }
+        public void MoveDown()
+        {
+            Position.MoveDown();
+            Draw();
         }
     }
 }

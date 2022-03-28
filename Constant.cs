@@ -2,6 +2,9 @@
 
 namespace ASCII_Invaders
 {
+    /// <summary>
+    /// Class <c>Constant</c> contains the constants
+    /// </summary>
     public static class Constant
     {
         public static readonly int ScreenTop = Console.CursorTop;

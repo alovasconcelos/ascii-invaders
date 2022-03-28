@@ -2,14 +2,23 @@
 
 namespace ASCII_Invaders
 {
+    /// <summary>
+    /// Class <c>GameObject</c> is the base class for game objects
+    /// </summary>
     class Enemy : GameObject
     {
+        /// <summary>
+        /// Method <c>constructor</c>
+        /// </summary>
         public Enemy() 
         {
             Sprite = ">o<";
             Color = ConsoleColor.Green;
         }
 
+        /// <summary>
+        /// Method <c>Destroy</c>draws a little animation and clears the enemy from screen
+        /// </summary>
         public void Destroy()
         {
             Color = ConsoleColor.DarkGray;
@@ -26,7 +35,6 @@ namespace ASCII_Invaders
             Util.Wait(10);
             Clear();
             Visible = false;
-
         }
     }
 }

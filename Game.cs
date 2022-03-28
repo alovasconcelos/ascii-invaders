@@ -4,6 +4,9 @@ using System.Media;
 
 namespace ASCII_Invaders
 {
+    /// <summary>
+    /// Class <c>Game</c> contains objects and methods to control the game
+    /// </summary>
     class Game
     {
         private bool keepRunning;
@@ -112,7 +115,7 @@ namespace ASCII_Invaders
             PlaySound = true;
             battleField.Draw();
 
-            ShowSplashScreen();
+            battleField.ShowSplashScreen();
 
             enemiesGoLeft = true;
             enemiesGoDown = false;
@@ -121,7 +124,7 @@ namespace ASCII_Invaders
             BestScore = Util.ReadBestScore();
         }
 
-        private void PlayWavFile(Stream file)
+        public void PlayWavFile(Stream file)
         {
             if (!PlaySound)
             {
@@ -141,7 +144,9 @@ namespace ASCII_Invaders
             if (Level == Constant.FinalLevel)
             {
                 // Last level reached - Congratulations
-                Congratulations();
+                PlayWavFile(Resource1.congrats);
+                battleField.Congratulations();
+                Level = 0;
             }
 
             // Increment level number
@@ -156,194 +161,9 @@ namespace ASCII_Invaders
             // Load enemies
             LoadEnemies();
             aliveEnemies = Constant.EnemiesPerRow * Constant.EnemiesRows;
-            ShowLevelSplashScreen();
+            battleField.ShowLevelSplashScreen(Level);
         }
 
-
-        private  void Congratulations()
-        {
-            PlayWavFile(Resource1.congrats);
-            for (var row = Constant.BattleFieldBottom - 8; row > Constant.BattleFieldTop; row--)
-            {
-                Util.WriteAt(7, row,     "╔═══╗                     ╔╗     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 1, "║╔═╗║                    ╔╝╚╗    ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 2, "║║ ╚╝╔══╗╔═╗ ╔══╗╔═╗╔══╗ ╚╗╔╝╔══╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 3, "║║ ╔╗║╔╗║║╔╗╗║╔╗║║╔╝╚ ╗║  ║║ ║══╣", ConsoleColor.Red);
-                Util.WriteAt(7, row + 4, "║╚═╝║║╚╝║║║║║║╚╝║║║ ║╚╝╚╗ ║╚╗╠══║", ConsoleColor.Red);
-                Util.WriteAt(7, row + 5, "╚═══╝╚══╝╚╝╚╝╚═╗║╚╝ ╚═══╝ ╚═╝╚══╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 6, "             ╔═╝║                ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 7, "             ╚══╝                ", ConsoleColor.Red);
-                Util.ClearLine(row + 8);
-                Util.Wait(Constant.OneSecond / 10);
-
-            }
-            Level = 0;
-            Util.Wait(Constant.OneSecond * 3);
-            ClearBattleField();
-        }
-        private  void ShowSplashScreen()
-        {
-            for (var row = Constant.BattleFieldBottom - 13; row > Constant.BattleFieldTop; row--)
-            { 
-                Util.WriteAt(7, row,      "╔═══╗        ╔══╗╔══╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 1,  "║╔═╗║        ╚╣╠╝╚╣╠╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 2,  "║║ ║║╔══╗╔══╗ ║║  ║║ ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 3,  "║╚═╝║║══╣║╔═╝ ║║  ║║ ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 4,  "║╔═╗║╠══║║╚═╗╔╣╠╗╔╣╠╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 5,  "╚╝ ╚╝╚══╝╚══╝╚══╝╚══╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 6,  "       ╔══╗               ╔╗           ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 7,  "       ╚╣╠╝               ║║           ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 8,  "        ║║ ╔═╗ ╔╗╔╗╔══╗ ╔═╝║╔══╗╔═╗╔══╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 9,  "        ║║ ║╔╗╗║╚╝║╚ ╗║ ║╔╗║║╔╗║║╔╝║══╣", ConsoleColor.Red);
-                Util.WriteAt(7, row + 10, "       ╔╣╠╗║║║║╚╗╔╝║╚╝╚╗║╚╝║║║═╣║║ ╠══║", ConsoleColor.Red);
-                Util.WriteAt(7, row + 11, "       ╚══╝╚╝╚╝ ╚╝ ╚═══╝╚══╝╚══╝╚╝ ╚══╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 12, "               alovasconcelos.github.io", ConsoleColor.DarkBlue);
-                Util.ClearLine(row + 13);
-                Util.Wait(Constant.OneSecond / 10);
-            }
-            Util.Wait(Constant.OneSecond * 3);
-            ClearBattleField();
-        }
-
-        private  void GameOver()
-        {
-            ClearBattleField();
-            PlayWavFile(Resource1.game_over);
-            for (var row = Constant.BattleFieldBottom - 12; row > Constant.BattleFieldTop; row--)
-            {
-                Util.WriteAt(7, row,      "╔═══╗             ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 1,  "║╔═╗║             ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 2,  "║║ ╚╝╔══╗ ╔╗╔╗╔══╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 3,  "║║╔═╗╚ ╗║ ║╚╝║║╔╗║", ConsoleColor.Red);
-                Util.WriteAt(7, row + 4,  "║╚╩═║║╚╝╚╗║║║║║║═╣", ConsoleColor.Red);
-                Util.WriteAt(7, row + 5,  "╚═══╝╚═══╝╚╩╩╝╚══╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 6,  "                  ╔══╗╔╗╔╗╔══╗╔═╗", ConsoleColor.Red);
-                Util.WriteAt(7, row + 7,  "                  ║╔╗║║╚╝║║╔╗║║╔╝", ConsoleColor.Red);
-                Util.WriteAt(7, row + 8,  "                  ║╚╝║╚╗╔╝║║═╣║║ ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 9,  "                  ╚══╝ ╚╝ ╚══╝╚╝ ", ConsoleColor.Red);
-                Util.ClearLine(row + 10);
-                Util.WriteAt(7, row + 11, "    Your score: " + Score.ToString().PadLeft(6, '0'), ConsoleColor.Yellow);
-                Util.ClearLine(row + 12);
-                Util.Wait(Constant.OneSecond / 10);
-            }
-            Util.Wait(Constant.OneSecond * 5);
-            Level = 0;
-            Score = 0;
-            ClearBattleField();
-        }
-
-        private  void ShowLevelSplashScreen()
-        {
-            for (var row = Constant.BattleFieldBottom - 6; row > Constant.BattleFieldTop; row--)
-            {
-
-                Util.WriteAt(7, row,     "#       ######  #    #  ######  #     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 1, "#       #       #    #  #       #     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 2, "#       #####   #    #  #####   #     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 3, "#       #       #    #  #       #     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 4, "#       #        #  #   #       #     ", ConsoleColor.Red);
-                Util.WriteAt(7, row + 5, "######  ######    ##    ######  ######", ConsoleColor.Red);
-                Util.ClearLine(row + 6);
-                Util.Wait(Constant.OneSecond / 10);
-            }
-
-            switch (Level)
-            {
-                case 1:
-
-                    Util.WriteAt(23, Constant.BattleFieldTop + 8,  "  #", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 9,  " ##", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 10, "# #", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 11, "  #", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 12, "  #", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 13, "  #", ConsoleColor.Yellow);
-                    Util.WriteAt(23, Constant.BattleFieldTop + 14, "#####", ConsoleColor.Yellow);
-                    break;
-                case 2:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "      #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#      ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#      ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "#######", ConsoleColor.Yellow);
-                    break;
-                case 3:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "      #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ", ConsoleColor.Yellow);
-                    break;
-                case 4:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  "#     ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#    #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#    #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "#######", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "     #", ConsoleColor.Yellow);
-                    break;
-                case 5:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  "#######", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#      ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#      ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ", ConsoleColor.Yellow);
-                    break;
-                case 6:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#      ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "###### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ", ConsoleColor.Yellow);
-                    break;
-                case 7:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  "#######", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#    # ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "    #  ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, "   #   ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "  #    ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "  #    ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, "  #    ", ConsoleColor.Yellow);
-                    break;
-                case 8:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ", ConsoleColor.Yellow);
-                    break;
-                case 9:
-                    Util.WriteAt(22, Constant.BattleFieldTop + 8,  " ##### ", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 9,  "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 10, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 11, " ######", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 12, "      #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 13, "#     #", ConsoleColor.Yellow);
-                    Util.WriteAt(22, Constant.BattleFieldTop + 14, " ##### ", ConsoleColor.Yellow);
-                    break;
-            }
-            Util.Wait(Constant.OneSecond * 2);
-            ClearBattleField();
-        }
-
-        private  void ClearBattleField()
-        {
-            for (var row = Constant.BattleFieldBottom; row >= Constant.BattleFieldTop; row--)
-            {
-                Util.ClearLine(row);
-                Util.Wait(Constant.OneSecond / 50);
-            }
-        }
         private  void Finish()
         {
             Console.Clear();
@@ -368,29 +188,6 @@ namespace ASCII_Invaders
 
         }
 
-        private  void ConfirmExit()
-        {
-            // Clear the battlefield
-            ClearBattleField();
-            Util.WriteAt(4, 10, "Press Y to exit or any other key to continue", ConsoleColor.Red);
-            if (Console.ReadKey().Key.Equals(ConsoleKey.Y))
-            {
-                keepRunning = false;
-            }
-            Util.ClearLine(10);
-            Update();
-        }
-
-        private  void Pause()
-        {
-            // Clear the battlefield
-            ClearBattleField();
-            Util.WriteAt(4, 10, "Press any key to continue", ConsoleColor.Red);
-            Console.ReadKey();
-            Util.ClearLine(10);
-            Update();
-        }
-
         private  void CheckKeypressed()
         {
             if (Console.KeyAvailable)
@@ -411,12 +208,16 @@ namespace ASCII_Invaders
                         PlaySound = !PlaySound;
                         break;
                     case ConsoleKey.P:
-                        Pause();
+                        battleField.Pause();
                         break;
                     case ConsoleKey.Escape:
-                        ConfirmExit();
+                        if (battleField.Confirm("Press Y to exit or any other key to continue"))
+                        {
+                            keepRunning = false;
+                        }
                         break;
                 }
+                Update();
             }
         }
 
@@ -460,7 +261,10 @@ namespace ASCII_Invaders
 
                     if (TheEnemyLanded(enemies[row, col]))
                     {
-                        GameOver();
+                        PlayWavFile(Resource1.game_over);
+                        battleField.GameOver(Score);
+                        Level = 0;
+                        Score = 0;
                         return;
                     }
                     if (enemies[row, col].Visible)
@@ -470,7 +274,7 @@ namespace ASCII_Invaders
                             goLeft = false;
                             goDown = true;
                         }
-                        if (enemies[row, col].Position.Y == Constant.BattleFieldWidth - 2)
+                        if (enemies[row, col].Position.X == Constant.BattleFieldWidth - 2)
                         {
                             goLeft = true;
                             goDown = true;
@@ -527,14 +331,6 @@ namespace ASCII_Invaders
             }
         }
 
-        void UpdateStatusBar()
-        {
-            Util.WriteAt(Constant.BattleFieldSoundStatusCol, Constant.BattleFieldStatusBar, PlaySound ? "On " : "Off");
-            Util.WriteAt(Constant.BattleFieldLevelCol, Constant.BattleFieldStatusBar, Level.ToString());
-            Util.WriteAt(Constant.BattleFieldScoreCol, Constant.BattleFieldStatusBar, Score.ToString().PadLeft(6, '0'));
-            Util.WriteAt(Constant.BattleFieldBestScoreCol, Constant.BattleFieldStatusBar, _bestScore.ToString().PadLeft(6, '0'));
-        }
-
         void Update()      
          {
             if (clockTicking++ == 59)
@@ -551,7 +347,7 @@ namespace ASCII_Invaders
                 UpdateEnemies();
             }
             UpdateBullets();
-            UpdateStatusBar();
+            battleField.UpdateStatusBar(PlaySound, Level, Score, BestScore);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ASCII_Invaders
         public static readonly int FinalLevel = 9;
         public static readonly int EnemiesPerRow = 7;
         public static readonly int EnemiesRows = 5;
-        public static readonly int Bullets = 3;
+        public static readonly int Bullets = 1;
         public static readonly int EnemiesTimer = 10;
 
         public static readonly string ShotSound = "hitHurt.wav";

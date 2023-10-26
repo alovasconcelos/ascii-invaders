@@ -25,7 +25,7 @@ namespace ASCII_Invaders
 
         public void MoveRight()
         {
-            if (X < Constant.BattleFieldWidth)
+            if (X < Constant.BattleFieldWidth - 1)
             {
                 X++;
             }

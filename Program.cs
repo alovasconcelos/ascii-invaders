@@ -8,7 +8,7 @@ namespace ASCII_Invaders
         {
             Console.Clear();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-            
+
             new Game().Run();
         }
     }

@@ -13,7 +13,7 @@ namespace ASCII_Invaders
         public Cannon()
         {
             Color = ConsoleColor.Blue;
-            Sprite = "^-^";
+            Sprite = "🤖";
             Position = new Position((Constant.BattleFieldWidth - 2) / 2 - 1, Constant.BattleFieldBottom);
             PreviousPosition = new Position((Constant.BattleFieldWidth - 2) / 2 - 1, Constant.BattleFieldBottom);
         }

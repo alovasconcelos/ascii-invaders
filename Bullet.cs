@@ -13,7 +13,7 @@ namespace ASCII_Invaders
         /// </summary>
         public Bullet()
         {
-            Sprite = "^";
+            Sprite = "🙭";
             Shot = false;
             Color = ConsoleColor.Yellow;
         }

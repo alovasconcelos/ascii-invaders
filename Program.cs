@@ -6,6 +6,7 @@ namespace ASCII_Invaders
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             new Game().Run();
         }
     }

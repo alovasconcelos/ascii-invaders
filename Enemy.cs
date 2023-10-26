@@ -12,7 +12,7 @@ namespace ASCII_Invaders
         /// </summary>
         public Enemy() 
         {
-            Sprite = ">o<";
+            Sprite = "👾";
             Color = ConsoleColor.Green;
         }
 

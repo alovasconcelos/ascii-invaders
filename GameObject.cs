@@ -27,7 +27,7 @@ namespace ASCII_Invaders
                 // If there's a previous position set, then clear that 
                 if (PreviousPosition.X > 0)
                 {
-                    Util.WriteAt(PreviousPosition.X, PreviousPosition.Y, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+                    Util.WriteAt(PreviousPosition.X, PreviousPosition.Y, " ");
                 }
                 Util.WriteAt(Position.X, Position.Y, Sprite, Color);
                 PreviousPosition.SetPosition(Position);
@@ -38,7 +38,7 @@ namespace ASCII_Invaders
         {
             if (Visible)
             {
-                Util.WriteAt(Position.X, Position.Y, string.Concat(Enumerable.Repeat(" ", Sprite.Length)));
+                Util.WriteAt(Position.X, Position.Y, " ");
             }
         }
 

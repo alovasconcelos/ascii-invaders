@@ -15,17 +15,17 @@ namespace ASCII_Invaders
         /// </summary>
         public void Draw()
         {
-            Util.WriteAt(0, 0, "+--------------------------------------------------+");
-            Util.WriteAt(0, 1, "|                  ASCII INVADERS                  |", ConsoleColor.Blue);
-            Util.WriteAt(0, 2, "+--------------------------------------------------+");
+            Util.WriteAt(0, 0, "┍━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┑");
+            Util.WriteAt(0, 1, "│                  ASCII INVADERS                  │");
+            Util.WriteAt(0, 2, "├━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤");
             for (int row = Constant.BattleFieldTop; row <= Constant.BattleFieldBottom; row++)
             {
-                Util.WriteAt(0, row, "|                                                  |");
+                Util.WriteAt(0, row, "│                                                  │");
             }
-            Util.WriteAt(0, Constant.BattleFieldBottom + 1, "+--------------------------------------------------+");
-            Util.WriteAt(0, Constant.BattleFieldStatusBar, "|Sound:on |Level: |Score:       |Best Score:       |");
-            Util.WriteAt(0, Constant.BattleFieldStatusBar + 1, "+--------------------------------------------------+");
-        }
+            Util.WriteAt(0, Constant.BattleFieldBottom + 1, "├━━━━━━━━━┮━━━━━━━┮━━━━━━━━━━━━━┮━━━━━━━━━━━━━━━━━━┤");
+            Util.WriteAt(0, Constant.BattleFieldStatusBar,  "│Sound:on │Level: │Score:       │Best Score:       │");
+            Util.WriteAt(0, Constant.BattleFieldStatusBar + 1, "┖━━━━━━━━━┶━━━━━━━┶━━━━━━━━━━━━━┶━━━━━━━━━━━━━━━━━━┙");
+        }                                                                                                          
 
         /// <summary>
         /// Clears an entire line of the battlefield (except the borders)
@@ -36,6 +36,9 @@ namespace ASCII_Invaders
             Util.WriteAt(1, row, string.Concat(Enumerable.Repeat(" ", 50)));
         }
 
+        /// <summary>
+        /// Shows congratulations message
+        /// </summary>
         public void Congratulations()
         {
             for (var row = Constant.BattleFieldBottom - 8; row > Constant.BattleFieldTop; row--)
@@ -54,6 +57,10 @@ namespace ASCII_Invaders
             Util.Wait(Constant.OneSecond * 3);
             ClearBattleField();
         }
+
+        /// <summary>
+        /// Shows the splash screen
+        /// </summary>
         public void ShowSplashScreen()
         {
             for (var row = Constant.BattleFieldBottom - 13; row > Constant.BattleFieldTop; row--)
@@ -78,6 +85,10 @@ namespace ASCII_Invaders
             ClearBattleField();
         }
 
+        /// <summary>
+        /// Game over screen, showing the score achieved
+        /// </summary>
+        /// <param name="score"></param>
         public void GameOver(int score)
         {
             ClearBattleField();
@@ -103,6 +114,10 @@ namespace ASCII_Invaders
             ClearBattleField();
         }
 
+        /// <summary>
+        /// Splash screen for each level
+        /// </summary>
+        /// <param name="level"></param>
         public void ShowLevelSplashScreen(int level)
         {
             for (var row = Constant.BattleFieldBottom - 6; row > Constant.BattleFieldTop; row--)
@@ -205,6 +220,9 @@ namespace ASCII_Invaders
             ClearBattleField();
         }
 
+        /// <summary>
+        /// Clears the battle field
+        /// </summary>
         private void ClearBattleField()
         {
             for (var row = Constant.BattleFieldBottom; row >= Constant.BattleFieldTop; row--)
@@ -214,9 +232,14 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Shows confirm dialog
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>True when confirmed, false otherwise</returns>
         public bool Confirm(string message)
         {
-            // Clear the battlefield
+            // Clears the battlefield
             ClearBattleField();
             Util.WriteAt(1, 11, Util.PadCenter(message), ConsoleColor.Red);
 
@@ -225,15 +248,25 @@ namespace ASCII_Invaders
             return ret;
         }
 
+        /// <summary>
+        /// Pauses the game, waiting for the player to press any key
+        /// </summary>
         public void Pause()
         {
-            // Clear the battlefield
+            // Clears the battlefield
             ClearBattleField();
             Util.WriteAt(1, 10, Util.PadCenter("Press any key to continue"), ConsoleColor.Red);
             Console.ReadKey(true);
             ClearLine(10);
         }
 
+        /// <summary>
+        /// Shows information about the game on the status bar
+        /// </summary>
+        /// <param name="soundOn"></param>
+        /// <param name="level"></param>
+        /// <param name="score"></param>
+        /// <param name="bestScore"></param>
         public void UpdateStatusBar(bool soundOn, int level, int score, int bestScore)
         {
             Util.WriteAt(Constant.BattleFieldSoundStatusCol, Constant.BattleFieldStatusBar, soundOn ? "On " : "Off");

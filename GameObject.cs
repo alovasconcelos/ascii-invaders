@@ -20,6 +20,9 @@ namespace ASCII_Invaders
             Color = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Draws the game object
+        /// </summary>
         public void Draw()
         {
             if  (Visible)
@@ -34,6 +37,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Clears the game object
+        /// </summary>
         public void Clear()
         {
             if (Visible)
@@ -42,23 +48,36 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Moves the game object left
+        /// </summary>
         public void MoveLeft()
         {
             Position.MoveLeft();
             Draw();
         }
 
+        /// <summary>
+        /// Moves the game object right
+        /// </summary>
         public void MoveRight()
         {
             Position.MoveRight();
             Draw();
         }
 
+        /// <summary>
+        /// Moves the game object up
+        /// </summary>
         public void MoveUp()
         {
             Position.MoveUp();
             Draw();
         }
+
+        /// <summary>
+        /// Moves the game object down
+        /// </summary>
         public void MoveDown()
         {
             Position.MoveDown();

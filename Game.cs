@@ -9,14 +9,11 @@ namespace ASCII_Invaders
     /// </summary>
     class Game
     {
-        private bool keepRunning;
-
-        private int clockTicking = 0;
-
-        public  int aliveEnemies;
-
         public bool PlaySound { get; set; }
 
+        private bool keepRunning;
+        private int clockTicking = 0;
+        public  int aliveEnemies;
         private  int _score;
         public  int Score
         {
@@ -35,7 +32,6 @@ namespace ASCII_Invaders
         }
 
         private  int _bestScore;
-
         public  int BestScore
         {
             get
@@ -50,10 +46,8 @@ namespace ASCII_Invaders
         }
 
         public  int Level { get; set; }
-
         private  bool enemiesGoLeft;
         private  bool enemiesGoDown;
-
         private  BattleField battleField;
         private  Cannon cannon;
         private  ConsoleKey keyPressed;
@@ -64,6 +58,9 @@ namespace ASCII_Invaders
         private  float enemiesSpeed = 10f;
         private  Random random = new Random();
 
+        /// <summary>
+        /// Runs the game
+        /// </summary>
         public void Run()
         {
             Init();
@@ -88,6 +85,9 @@ namespace ASCII_Invaders
             Finish();
         }
 
+        /// <summary>
+        /// Loads enemies to the enemies array
+        /// </summary>
         private  void LoadEnemies()
         {
             for (var row = 0; row < Constant.EnemiesRows; row++)
@@ -102,6 +102,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Game initialization
+        /// </summary>
         public void Init()
         {
             // Clear screen and hide the cursor
@@ -124,6 +127,10 @@ namespace ASCII_Invaders
             BestScore = Util.ReadBestScore();
         }
 
+        /// <summary>
+        /// Plays a sound
+        /// </summary>
+        /// <param name="file"></param>
         public void PlayWavFile(Stream file)
         {
             if (!PlaySound)
@@ -138,7 +145,9 @@ namespace ASCII_Invaders
             }
         }
 
-
+        /// <summary>
+        /// Go to the next level
+        /// </summary>
         private void NextLevel()
         {
             if (Level == Constant.FinalLevel)
@@ -164,6 +173,9 @@ namespace ASCII_Invaders
             battleField.ShowLevelSplashScreen(Level);
         }
 
+        /// <summary>
+        /// The end of the game
+        /// </summary>
         private  void Finish()
         {
             Console.Clear();
@@ -171,6 +183,9 @@ namespace ASCII_Invaders
             Console.WriteLine("Bye...");
         }
 
+        /// <summary>
+        /// Fires a bullet
+        /// </summary>
         private  void Shoot()
         {
             foreach (var bullet in bullets)
@@ -188,6 +203,9 @@ namespace ASCII_Invaders
 
         }
 
+        /// <summary>
+        /// Check if any key were pressed
+        /// </summary>
         private  void CheckKeypressed()
         {
             if (Console.KeyAvailable)
@@ -221,6 +239,10 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Randomize the enemies speed
+        /// </summary>
+        /// <returns>randomized enemy speed</returns>
         private  float RandomizeEnemiesSpeed()
         {
             enemiesSpeed = enemiesSpeed - (float)random.NextDouble() * Level;
@@ -236,6 +258,9 @@ namespace ASCII_Invaders
             return false;
         }
 
+        /// <summary>
+        /// Updates the enemies positions on the battle field
+        /// </summary>
         private  void UpdateEnemies()
         {
             var goLeft = enemiesGoLeft;
@@ -286,6 +311,11 @@ namespace ASCII_Invaders
             enemiesGoDown = goDown;
         }
 
+        /// <summary>
+        /// Check if any enemy has been hitted
+        /// </summary>
+        /// <param name="bullet"></param>
+        /// <returns>True if any enemy has been hitted</returns>
          bool CheckEnemyHit(Bullet bullet)
         {
             for (var row = 0; row < Constant.EnemiesRows; row++)
@@ -310,6 +340,9 @@ namespace ASCII_Invaders
             return false;
         }
 
+        /// <summary>
+        /// Updates the bullets positions on the battle field
+        /// </summary>
          void UpdateBullets()
         {
             for (var b = 0; b < Constant.Bullets; b++)
@@ -331,6 +364,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Updates the game screen
+        /// </summary>
         void Update()      
          {
             if (clockTicking++ == 59)

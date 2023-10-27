@@ -15,6 +15,9 @@ namespace ASCII_Invaders
             Y = y;
         }
 
+        /// <summary>
+        /// Moves position left
+        /// </summary>
         public void MoveLeft()
         {
             if (X > Constant.BattleFieldLeft)
@@ -23,6 +26,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Moves position right
+        /// </summary>
         public void MoveRight()
         {
             if (X < Constant.BattleFieldWidth - 1)
@@ -31,6 +37,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Moves position up
+        /// </summary>
         public void MoveUp()
         {
             if (Y > Constant.BattleFieldTop)
@@ -39,6 +48,9 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Moves position down
+        /// </summary>
         public void MoveDown()
         {
             if (Y < Constant.BattleFieldBottom)
@@ -47,6 +59,10 @@ namespace ASCII_Invaders
             }
         }
 
+        /// <summary>
+        /// Sets absolute position
+        /// </summary>
+        /// <param name="pos"></param>
         public void SetPosition(Position pos)
         {
             X = pos.X;

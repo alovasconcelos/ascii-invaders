@@ -12,7 +12,6 @@ namespace ASCII_Invaders
         public bool PlaySound { get; set; }
 
         private bool keepRunning;
-        private int clockTicking = 0;
         public  int aliveEnemies;
         private  int _score;
         public  int Score
@@ -369,10 +368,6 @@ namespace ASCII_Invaders
         /// </summary>
         void Update()      
          {
-            if (clockTicking++ == 59)
-            {
-                clockTicking = 0;
-            }
             cannon.Draw();
             if (aliveEnemies == 0)
             {
